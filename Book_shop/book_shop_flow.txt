@@ -1,0 +1,17 @@
+sequenceDiagram
+    participant User
+    participant login.html
+    participant AuthenticationServlet
+    participant CustomerDaoImpl
+    participant DBUtils
+    participant DB
+
+    User ->> login.html: Enters email & password
+    login.html ->> AuthenticationServlet: POST request with credentials
+    AuthenticationServlet ->> CustomerDaoImpl: authenticateCustomer(email, password)
+    CustomerDaoImpl ->> DBUtils: getConnection()
+    DBUtils ->> DB: Connect to MySQL
+    CustomerDaoImpl ->> DB: Run SELECT query
+    DB -->> CustomerDaoImpl: Returns ResultSet
+    CustomerDaoImpl -->> AuthenticationServlet: Returns Customer object
+    AuthenticationServlet ->> User: Show success/failure

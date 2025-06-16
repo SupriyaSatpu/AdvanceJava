@@ -17,7 +17,7 @@ import dao.CustomerDaoImpl;
 /**
  * Servlet implementation class AunthenticationServlet
  */
-@WebServlet(description = "User validation servlet", urlPatterns = { "/aunthenticate" })
+@WebServlet(description = "User validation servlet", urlPatterns = { "/aunthenticate" }, loadOnStartup = 1)
 public class AunthenticationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CustomerDaoImpl dao;
@@ -61,7 +61,12 @@ public class AunthenticationServlet extends HttpServlet {
 			}
 			else {
 				pw.print("<h4>Successful login</h4>");
-				pw.print("<h5>User details:"+ customer + "</h5>");
+				//In case of successful login : redirect the client to the next page in the NEXT request coming from
+				//client side
+				//API of HttpServletResponse
+				//public void sendRedirect(String redirectLocation) throws IOException
+				response.sendRedirect("category"); //Must match with the URL pattern of the categoryServlet			
+				//pw.print("<h5>User details:"+ customer + "</h5>");
 			}
 		}catch(Exception e) {
 			throw new ServletException("err in dopost"+ getClass().getName(), e);
